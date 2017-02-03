@@ -39,11 +39,11 @@ void testLexer() {
     // TODO: testar o analisador lexico
 }
 
-char *palavrasChave[] = { "int", "printf", "printint", "return"};
+std::string palavrasChave[] = { "int", "printf", "printint", "return"};
 
-int identificaPalavraChave(const char *s) {
+int identificaPalavraChave(std::string &s) {
     for (int i = 0; i < 4; ++i) {
-        if (strcmp(s, palavrasChave[i]) == 0)
+        if (s == palavrasChave[i])
             return i;
     }
 
@@ -185,7 +185,7 @@ Token *getNextToken() {
                     }
                     returnChar(c);
 
-                    int ix = identificaPalavraChave(s.c_str());
+                    int ix = identificaPalavraChave(s);
                     if (ix == -1) {
                         tok.type = TokType::Identificador;
                         tok.nome = s;
@@ -195,7 +195,8 @@ Token *getNextToken() {
                     }
                     done = true;
                 } else {
-                    std::string error = "Caractere nao esperado: " + static_cast<char>(c);
+                    std::string error = "Caractere nao esperado: ";
+                    error += static_cast<char>(c);
                     lexerError(error.c_str());
                     return nullptr;
                 }
