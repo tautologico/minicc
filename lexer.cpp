@@ -6,14 +6,19 @@
 #include <cstdlib>
 #include "lexer.h"
 
+/// O token atual
 Token tok;
 
+/// O arquivo/stream de onde o lexer le caracteres
+FILE *stream;
+
+/// buffer de caracteres para o lexer
 int buffer;
 bool bufferValid = false;
 
 int getNextChar() {
     if (!bufferValid)
-        buffer = getchar();
+        buffer = getc(stream);
     else
         bufferValid = false;
     return buffer;
@@ -22,6 +27,12 @@ int getNextChar() {
 void returnChar(int c) {
     buffer = c;
     bufferValid = true;
+}
+
+/// Inicializa o lexer
+void initLexer(FILE *f) {
+    bufferValid = false;
+    stream = f;
 }
 
 void testLexer() {
@@ -148,7 +159,7 @@ Token *getNextToken() {
                 done = true;
                 break;
 
-            case -1:
+            case EOF:
                 tok.type = TokType::Eof;
                 done = true;
                 break;

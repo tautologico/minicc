@@ -8,6 +8,8 @@
 using namespace std;
 
 int main() {
+    initLexer(stdin);
+
     Token *tok = getNextToken();
 
     while (tok->type != TokType::Eof) {
