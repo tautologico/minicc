@@ -16,7 +16,7 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(${LLVM_INCLUDE_DIRS})
 add_definitions(${LLVM_DEFINITIONS})
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp lexer.cpp lexer.h)
 add_executable(minicc ${SOURCE_FILES})
 
 # llvm_map_components_to_libnames(llvm_libs core)
