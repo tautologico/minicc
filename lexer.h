@@ -48,8 +48,9 @@ struct Token {
 // funcoes
 void testLexer();
 Token* getNextToken();
-const char* printTokenType(Token &tok);
+const char* printTokenType(TokType &type);
 void initLexer(FILE *f);
+
 
 
 #endif //MINICC_LEXER_H

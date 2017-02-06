@@ -19,5 +19,12 @@ add_definitions(${LLVM_DEFINITIONS})
 set(SOURCE_FILES main.cpp lexer.cpp lexer.h)
 add_executable(minicc ${SOURCE_FILES})
 
+# copia arquivos de teste para diretorio de build
+add_custom_command(TARGET minicc POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/test/print.mc
+        ${CMAKE_SOURCE_DIR}/test/cond.mc
+        ${CMAKE_CURRENT_BINARY_DIR})
+
 # llvm_map_components_to_libnames(llvm_libs core)
 # target_link_libraries(minicc ${llvm_libs})
