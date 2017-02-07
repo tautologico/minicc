@@ -213,11 +213,11 @@ Token *getNextToken() {
 
 int errors = 0;
 
-static inline void printToken(Token *t) {
+void printToken(Token *t) {
     fprintf(stderr, "tipo: %s | val = %d | nome = %s", printTokenType(t->type), t->val, t->nome.c_str());
 }
 
-static inline void printToken(TokType typ, int val, std::string nome) {
+void printToken(TokType typ, int val, std::string nome) {
     fprintf(stderr, "tipo: %s | val = %d | nome = %s", printTokenType(typ), val, nome.c_str());
 }
 

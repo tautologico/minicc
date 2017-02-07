@@ -50,6 +50,8 @@ void testLexer();
 Token* getNextToken();
 const char* printTokenType(TokType &type);
 void initLexer(FILE *f);
+void printToken(Token *t);
+void printToken(TokType typ, int val, std::string nome);
 
 
 

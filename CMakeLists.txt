@@ -16,7 +16,7 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(${LLVM_INCLUDE_DIRS})
 add_definitions(${LLVM_DEFINITIONS})
 
-set(SOURCE_FILES main.cpp lexer.cpp lexer.h)
+set(SOURCE_FILES main.cpp lexer.cpp lexer.h parser.cpp parser.h ast.cpp ast.h)
 add_executable(minicc ${SOURCE_FILES})
 
 # copia arquivos de teste para diretorio de build
