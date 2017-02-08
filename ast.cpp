@@ -8,22 +8,26 @@
 
 std::string VarExp::toString(int ident) {
     std::ostringstream ss;
+    ss << std::string(ident, ' ');
     ss << "Var(" << this->nome << ")";
     return ss.str();
 }
 
 std::string LiteralExp::toString(int ident) {
     std::ostringstream ss;
+    ss << std::string(ident, ' ');
     ss << "Lit(" << this->valor << ")";
     return ss.str();
 }
 
 std::string Chamada::toString(int ident) {
     std::ostringstream ss;
+    ss << std::string(ident, ' ');
     ss << "Cham(" << this->nome << std::endl;
     for (auto& arg : this->parametros) {
         ss << arg->toString(ident + 2) << std::endl;
     }
+    ss << std::string(ident, ' ');
     ss << ")";
     return ss.str();
 }
@@ -47,8 +51,10 @@ std::string opString(Op op) {
 
 std::string ExpBin::toString(int ident) {
     std::ostringstream ss;
+    ss << std::string(ident, ' ');
     ss << opString(this->op) << "(";
     ss << this->e1->toString(ident + 2) << std::endl;
+    ss << std::string(ident, ' ');
     ss << this->e2->toString(ident + 2) << std::endl;
     ss << ")";
     return ss.str();

@@ -28,7 +28,7 @@ public:
 
 class LiteralExp : public Exp {
 public:
-    LiteralExp(int valor) : valor(valor) {}
+    LiteralExp(int valor) : valor(valor) { }
     int valor;
 
     std::string toString(int ident = 0) override;

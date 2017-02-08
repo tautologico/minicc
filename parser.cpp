@@ -121,10 +121,10 @@ Exp* parseAtom() {
 
         // variavel
         VarExp *v = new VarExp(nome);
-
         return v;
     } else if (tok->type == TokType::LiteralNum) {
         LiteralExp *l = new LiteralExp(tok->val);
+        tok = getNextToken();  // consume o literal
         return l;
     }
 
