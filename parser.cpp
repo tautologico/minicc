@@ -6,7 +6,7 @@
 #include "lexer.h"
 #include "parser.h"
 
-Token *tok;
+static Token *tok;
 
 void syntaxError(std::string msg) {
     fprintf(stderr, "Erro de sintaxe: %s\n", msg.c_str());
@@ -69,6 +69,7 @@ Comando* parseComando() {
     }
 
     syntaxError("comando esperado");
+    return nullptr;
 }
 
 std::vector<Comando*> parseComandos() {
@@ -78,6 +79,25 @@ std::vector<Comando*> parseComandos() {
                 (tok->type == TokType::PalavraChave and tok->val == Return))) {
         Comando *c = parseComando();
         result.push_back(c);
+    }
+
+    return result;
+}
+
+std::vector<Exp*> parseListaExpressoes() {
+    std::vector<Exp*> result;
+
+    // lista vazia
+    if (tok->type == TokType::Pontuacao and tok->val == RParen)
+        return result;
+
+    Exp *e1 = parseExpressao();
+    result.push_back(e1);
+
+    while (not (tok->type == TokType::Pontuacao and tok->val == RParen)) {
+        matchToken(TokType::Pontuacao, Comma, "");
+        e1 = parseExpressao();
+        result.push_back(e1);
     }
 
     return result;
@@ -122,7 +142,7 @@ Exp* parseAditiva() {
 }
 
 Exp* parseExpressao() {
-
+    return nullptr;
 }
 
 Funcao* parseFuncao() {

@@ -10,28 +10,49 @@
 #include "lexer.h"
 
 class ASTNode {
-
+public:
+    //virtual std::string toString(int ident = 0) = 0;
 };
 
-class Programa : public ASTNode {
+class Exp : public ASTNode {
 public:
-    Programa() = default;
-
-    void adicionaFuncao(Funcao *f) {  funcoes.push_back(f); }
-
-private:
-    std::vector<Funcao*> funcoes;
+    virtual std::string toString(int ident = 0) = 0;
 };
 
-
-class Funcao : public ASTNode {
+class VarExp : public Exp {
 public:
-    Funcao() = default;
-
+    VarExp(const std::string &nome) : nome(nome) {}
     std::string nome;
-    std::vector<Comando*> comandos;
-    std::vector<std::string> argumentos;
-    Exp* expRetorno;
+    virtual std::string toString(int ident = 0) override;
+};
+
+class LiteralExp : public Exp {
+public:
+    LiteralExp(int valor) : valor(valor) {}
+    int valor;
+
+    std::string toString(int ident = 0) override;
+};
+
+class Chamada : public Exp {
+public:
+    std::string nome;
+    std::vector<Exp*> parametros;
+
+    Chamada(const std::string &nome, std::vector<Exp*> params) : nome(nome), parametros(params) {}
+
+    std::string toString(int ident = 0) override;
+};
+
+class ExpBin : public Exp {
+public:
+    Op op;
+    Exp* e1;
+    Exp* e2;
+
+    ExpBin(Op op, Exp* e1, Exp* e2) : op(op), e1(e1), e2(e2) { }
+
+    std::string toString(int ident = 0) override;
 };
 
 class Comando : public ASTNode {
@@ -55,37 +76,25 @@ public:
     Exp* e;
 };
 
-class Exp : public ASTNode {
-
-};
-
-class VarExp : public Exp {
+class Funcao : public ASTNode {
 public:
-    VarExp(const std::string &nome) : nome(nome) {}
+    Funcao() = default;
+
     std::string nome;
+    std::vector<Comando*> comandos;
+    std::vector<std::string> argumentos;
+    Exp* expRetorno;
 };
 
-class LiteralExp : public Exp {
+class Programa : public ASTNode {
 public:
-    LiteralExp::LiteralExp(int valor) : valor(valor) {}
-    int valor;
+    Programa() = default;
+
+    void adicionaFuncao(Funcao *f) {  funcoes.push_back(f); }
+
+private:
+    std::vector<Funcao*> funcoes;
 };
 
-class Chamada : public Exp {
-public:
-    std::string nome;
-    std::vector<Exp*> parametros;
-
-    Chamada(const std::string &nome, std::vector<Exp*> params) : nome(nome), parametros(params) {}
-};
-
-class ExpBin : public Exp {
-public:
-    Op op;
-    Exp* e1;
-    Exp* e2;
-
-    ExpBin(Op op, Exp* e1, Exp* e2) : op(op), e1(e1), e2(e2) { }
-};
 
 #endif //MINICC_AST_H

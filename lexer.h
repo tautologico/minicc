@@ -5,6 +5,9 @@
 #ifndef MINICC_LEXER_H
 #define MINICC_LEXER_H
 
+#include <cstdio>
+#include <string>
+
 // tipos
 enum class TokType {
     Identificador,
