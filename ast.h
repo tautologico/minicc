@@ -16,14 +16,14 @@ public:
 
 class Exp : public ASTNode {
 public:
-    virtual std::string toString(int ident = 0) = 0;
+    virtual std::string toString(unsigned long ident = 0) = 0;
 };
 
 class VarExp : public Exp {
 public:
     VarExp(const std::string &nome) : nome(nome) {}
     std::string nome;
-    virtual std::string toString(int ident = 0) override;
+    virtual std::string toString(unsigned long ident = 0) override;
 };
 
 class LiteralExp : public Exp {
@@ -31,7 +31,7 @@ public:
     LiteralExp(int valor) : valor(valor) { }
     int valor;
 
-    std::string toString(int ident = 0) override;
+    std::string toString(unsigned long ident = 0) override;
 };
 
 class Chamada : public Exp {
@@ -41,7 +41,7 @@ public:
 
     Chamada(const std::string &nome, std::vector<Exp*> params) : nome(nome), parametros(params) {}
 
-    std::string toString(int ident = 0) override;
+    std::string toString(unsigned long ident = 0) override;
 };
 
 class ExpBin : public Exp {
@@ -52,7 +52,7 @@ public:
 
     ExpBin(Op op, Exp* e1, Exp* e2) : op(op), e1(e1), e2(e2) { }
 
-    std::string toString(int ident = 0) override;
+    std::string toString(unsigned long ident = 0) override;
 };
 
 class Comando : public ASTNode {

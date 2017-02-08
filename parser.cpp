@@ -124,7 +124,7 @@ Exp* parseAtom() {
         return v;
     } else if (tok->type == TokType::LiteralNum) {
         LiteralExp *l = new LiteralExp(tok->val);
-        tok = getNextToken();  // consume o literal
+        tok = getNextToken();  // consome o literal
         return l;
     }
 

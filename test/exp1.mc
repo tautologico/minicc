@@ -1,1 +1,1 @@
-fopen(33, xyz * 4, bar(alpha))
+fopen(33, xyz, bar(alpha))

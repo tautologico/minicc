@@ -6,21 +6,21 @@
 #include "ast.h"
 
 
-std::string VarExp::toString(int ident) {
+std::string VarExp::toString(unsigned long ident) {
     std::ostringstream ss;
     ss << std::string(ident, ' ');
     ss << "Var(" << this->nome << ")";
     return ss.str();
 }
 
-std::string LiteralExp::toString(int ident) {
+std::string LiteralExp::toString(unsigned long ident) {
     std::ostringstream ss;
     ss << std::string(ident, ' ');
     ss << "Lit(" << this->valor << ")";
     return ss.str();
 }
 
-std::string Chamada::toString(int ident) {
+std::string Chamada::toString(unsigned long ident) {
     std::ostringstream ss;
     ss << std::string(ident, ' ');
     ss << "Cham(" << this->nome << std::endl;
@@ -49,7 +49,7 @@ std::string opString(Op op) {
     return "";
 }
 
-std::string ExpBin::toString(int ident) {
+std::string ExpBin::toString(unsigned long ident) {
     std::ostringstream ss;
     ss << std::string(ident, ' ');
     ss << opString(this->op) << "(";
