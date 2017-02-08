@@ -24,6 +24,7 @@ add_custom_command(TARGET minicc POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_SOURCE_DIR}/test/print.mc
         ${CMAKE_SOURCE_DIR}/test/cond.mc
+        ${CMAKE_SOURCE_DIR}/test/exp1.mc
         ${CMAKE_CURRENT_BINARY_DIR})
 
 # llvm_map_components_to_libnames(llvm_libs core)

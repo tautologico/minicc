@@ -7,5 +7,7 @@
 
 #include "ast.h"
 
+Exp* parseAtom();
+void initParse();
 
 #endif //MINICC_PARSER_CPP_H

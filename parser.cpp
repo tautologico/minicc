@@ -103,6 +103,10 @@ std::vector<Exp*> parseListaExpressoes() {
     return result;
 }
 
+void initParse() {
+    tok = getNextToken();
+}
+
 Exp* parseAtom() {
     if (tok->type == TokType::Identificador) {   // variavel ou chamada
         std::string nome = tok->nome;
@@ -142,7 +146,7 @@ Exp* parseAditiva() {
 }
 
 Exp* parseExpressao() {
-    return nullptr;
+    return parseAtom(); // TODO alterar para implementacao real
 }
 
 Funcao* parseFuncao() {
