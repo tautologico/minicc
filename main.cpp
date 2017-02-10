@@ -11,15 +11,7 @@ using namespace std;
 
 int main() {
     //testLexer();
-    FILE *f = fopen("exp1.mc", "r");
-    initLexer(f);
-
-    std::cout << "Analisando..." << std::endl;
-    initParse();
-    Exp *e = parseAtom();
-    std::cout << e->toString() << std::endl;
-
-    fclose(f);
+    testParseExp();
 
     return 0;
 }

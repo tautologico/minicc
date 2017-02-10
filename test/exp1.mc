@@ -1,1 +1,2 @@
-fopen(33, xyz, bar(alpha))
+// precedencia 1
+33 * xy + z

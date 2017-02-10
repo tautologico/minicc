@@ -9,5 +9,7 @@
 
 Exp* parseAtom();
 void initParse();
+Exp* parseBinOp();
+void testParseExp();
 
 #endif //MINICC_PARSER_CPP_H
