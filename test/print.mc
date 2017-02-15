@@ -1,3 +1,5 @@
 int main() {
-  printint(4712);
+  printf(4712);
+
+  return 0;
 }

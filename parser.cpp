@@ -36,11 +36,15 @@ void matchToken(TokType type, int val, std::string nome) {
 }
 
 std::vector<std::string> parseListaArgumentos() {
+    std::vector<std::string> result;
+
+    if (tok->type == TokType::Pontuacao and tok->val == RParen)
+        return result;
+
     matchToken(TokType::PalavraChave, Int, "");
     std::string nome = tok->nome;
     matchTokenType(TokType::Identificador);
 
-    std::vector<std::string> result;
     result.push_back(nome);
 
     while (not (tok->type == TokType::Pontuacao and tok->val == RParen)) {
@@ -63,6 +67,7 @@ Comando* parseComando() {
         BlocoComandos *b = new BlocoComandos(bloco);
         return b;
     } else if (tok->type == TokType::PalavraChave and tok->val == Printf) {
+        tok = getNextToken();
         matchToken(TokType::Pontuacao, LParen, "");
         Exp *e = parseExpressao();
         matchToken(TokType::Pontuacao, RParen, "");
@@ -110,6 +115,8 @@ void initParse() {
     tok = getNextToken();
 }
 
+
+// analise de expressoes
 Exp* parseAtom() {
     if (tok->type == TokType::Identificador) {   // variavel ou chamada
         std::string nome = tok->nome;
@@ -164,19 +171,6 @@ Exp* parseBinOp() {
     return opEsq;
 }
 
-Exp* parseAditiva() {
-    Exp* atom = parseAtom();
-
-    if (tok->type == TokType::Operador and tok->val == OpSoma) {
-        tok = getNextToken();
-        Exp *e2 = parseExpressao();
-        ExpBin *res = new ExpBin(OpSoma, atom, e2);
-        return res;
-    }
-
-    return atom;
-}
-
 Exp* parseExpressao() {
     return parseBinOp();
 }
@@ -216,6 +210,7 @@ Programa* parsePrograma() {
     while (tok->type != TokType::Eof) {
         Funcao *f = parseFuncao();
         p->adicionaFuncao(f);
+
     }
 
     return p;

@@ -17,6 +17,8 @@ public:
 class Exp : public ASTNode {
 public:
     virtual std::string toString(unsigned long ident = 0) = 0;
+
+    virtual bool operator==(const Exp& rhs) = 0;
 };
 
 class VarExp : public Exp {
@@ -32,6 +34,10 @@ public:
     int valor;
 
     std::string toString(unsigned long ident = 0) override;
+
+    bool operator==(const LiteralExp &rhs) const;
+
+    bool operator!=(const LiteralExp &rhs) const;
 };
 
 class Chamada : public Exp {

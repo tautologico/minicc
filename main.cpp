@@ -11,7 +11,13 @@ using namespace std;
 
 int main() {
     //testLexer();
-    testParseExp();
+    //testParseExp();
+
+    FILE *f = fopen("print.mc", "r");
+    initLexer(f);
+    Programa *p = parsePrograma();
+
+    printf("OK\n");
 
     return 0;
 }

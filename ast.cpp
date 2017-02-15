@@ -20,6 +20,15 @@ std::string LiteralExp::toString(unsigned long ident) {
     return ss.str();
 }
 
+bool LiteralExp::operator==(const LiteralExp &rhs) const {
+    return static_cast<const Exp &>(*this) == static_cast<const Exp &>(rhs) &&
+           valor == rhs.valor;
+}
+
+bool LiteralExp::operator!=(const LiteralExp &rhs) const {
+    return !(rhs == *this);
+}
+
 std::string Chamada::toString(unsigned long ident) {
     std::ostringstream ss;
     ss << std::string(ident, ' ');
