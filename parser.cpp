@@ -127,6 +127,7 @@ Exp* parseAtom() {
             tok = getNextToken();
             std::vector<Exp*> params = parseListaExpressoes();
             Chamada *c = new Chamada(nome, params);
+            tok = getNextToken();
             return c;
         }
 
@@ -263,4 +264,6 @@ void testParseExp() {
     test_exp("exp5.mc", "+(+(Var(x)*(Lit(3)Lit(3)))Var(a))");
     test_exp("exp6.mc", "=(Var(a)+(Cham(funcVar(x))Lit(3)))");
     test_exp("exp7.mc", "=(Var(a)+(Lit(3)Cham(funcVar(x))))");
+    test_exp("exp8.mc", "<(Cham(funcVar(x))+(Cham(funcVar(y))Lit(3)))");
+    test_exp("exp9.mc", "+(+(*(Var(y)Var(x))Lit(3))Lit(10))");
 }
