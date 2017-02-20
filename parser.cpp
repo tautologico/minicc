@@ -4,6 +4,7 @@
 
 #include <cstdlib>
 #include <map>
+#include <algorithm>
 #include "lexer.h"
 #include "parser.h"
 
@@ -218,74 +219,48 @@ Programa* parsePrograma() {
 
 
 // --- Testes -----------------------------------
+bool assertExp(const std::string& sexp1, std::string sexp2){
+    int len = sexp1.length();
+    // removendo espaço e quebra de linha
+    sexp2.erase(std::remove(sexp2.begin(), sexp2.end(), ' '), sexp2.end());
+    sexp2.erase(std::remove(sexp2.begin(), sexp2.end(), '\n'), sexp2.end());
 
-void test_exp1() {
-    FILE *f = fopen("exp1.mc", "r");
+    if(sexp2==sexp1)
+      return true;
+    fprintf(stderr, "\nexpressao esperada =>\t %s", sexp1.c_str());
+
+    for(int i = 0 ; i < len ; ++i){
+      if(sexp1[i]!=sexp2[i]){
+        fprintf(stderr, "\nbreakpoint => \t\t %s\n", sexp2.substr(0, i).c_str());
+        fprintf(stderr, "expressao econtrada =>\t %s\n", sexp2.c_str());
+        break;
+      }
+    }
+    return false;
+}
+
+void test_exp(const char* file, const char* exp) {
+    FILE *f = fopen(file, "r");
     initLexer(f);
     initParse();
     Exp* e = parseExpressao();
 
-    fprintf(stderr, "expressao 1\n");
-    fprintf(stderr, "%s\n", e->toString().c_str());
+    fprintf(stderr, "arquivo: %s ....... \n", file);
 
-    ExpBin* ebin = dynamic_cast<ExpBin*>(e);
-
-    if (ebin == nullptr) {
-        fprintf(stderr, "exp1.mc: expressao binaria esperada na raiz\n");
-        return;
-    }
-
-    if (ebin->op != OpSoma) {
-        fprintf(stderr, "exp1.mc: operador soma esperado na raiz\n");
-        return;
-    }
-
-    ExpBin* opEsq = dynamic_cast<ExpBin*>(ebin->e1);
-    if (opEsq == nullptr) {
-        fprintf(stderr, "exp1.mc: expressao binaria esperada no operando esquerdo\n");
-        return;
-    }
-
-    if (opEsq->op != OpMult) {
-        fprintf(stderr, "exp1.mc: operador multiplicacao esperado no operando esquerdo\n");
-        return;
-    }
-
-    LiteralExp *l = dynamic_cast<LiteralExp*>(opEsq->e1);
-    if (l == nullptr) {
-        fprintf(stderr, "exp1.mc: literal esperado\n");
-        return;
-    }
-
-    if (l->valor != 33) {
-        fprintf(stderr, "exp1.mc: literal com valor 33 esperado\n");
-        return;
-    }
-
-    VarExp *xy = dynamic_cast<VarExp*>(opEsq->e2);
-    if (xy == nullptr) {
-        fprintf(stderr, "exp1.mc: variavel esperada\n");
-        return;
-    }
-    if (xy->nome != "xy") {
-        fprintf(stderr, "exp1.mc: variavel xy esperada\n");
-        return;
-    }
-
-    VarExp *z = dynamic_cast<VarExp*>(ebin->e2);
-    if (z == nullptr) {
-        fprintf(stderr, "exp1.mc: variavel esperada\n");
-        return;
-    }
-    if (z->nome != "z") {
-        fprintf(stderr, "exp1.mc: variavel z esperada\n");
-        return;
-    }
-
-    fprintf(stderr, "Analise feita com sucesso\n");
+    if(assertExp(exp, e->toString()))
+      fprintf(stderr, "........................ ok\n");
+    else
+      fprintf(stderr, "\n........................ fail\n");
 }
 
 void testParseExp() {
-    fprintf(stderr, "Testando analise de expressoes...\n");
-    test_exp1();
+    fprintf(stderr, "Testando analise de expressoes\n\n");
+
+    test_exp("exp1.mc", "+(*(Lit(33)Var(xy))Var(z))");
+    test_exp("exp2.mc", "+(Lit(33)*(Var(xy)Var(z)))");
+    test_exp("exp3.mc", "=(Var(y)+(Var(x)*(Lit(3)Cham(funcVar(x)))))");
+    test_exp("exp4.mc", "=(Var(a)Cham(funcCham(f*(Lit(3)Var(x)))))");
+    test_exp("exp5.mc", "+(+(Var(x)*(Lit(3)Lit(3)))Var(a))");
+    test_exp("exp6.mc", "=(Var(a)+(Cham(funcVar(x))Lit(3)))");
+    test_exp("exp7.mc", "=(Var(a)+(Lit(3)Cham(funcVar(x))))");
 }
