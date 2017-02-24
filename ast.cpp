@@ -5,7 +5,6 @@
 #include <sstream>
 #include "ast.h"
 
-
 std::string VarExp::toString(unsigned long ident) {
     std::ostringstream ss;
     ss << std::string(ident, ' ');
@@ -18,15 +17,6 @@ std::string LiteralExp::toString(unsigned long ident) {
     ss << std::string(ident, ' ');
     ss << "Lit(" << this->valor << ")";
     return ss.str();
-}
-
-bool LiteralExp::operator==(const LiteralExp &rhs) const {
-    return static_cast<const Exp &>(*this) == static_cast<const Exp &>(rhs) &&
-           valor == rhs.valor;
-}
-
-bool LiteralExp::operator!=(const LiteralExp &rhs) const {
-    return !(rhs == *this);
 }
 
 std::string Chamada::toString(unsigned long ident) {

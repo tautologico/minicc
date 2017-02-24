@@ -16,8 +16,8 @@ int main() {
     FILE *f = fopen("print.mc", "r");
     initLexer(f);
     Programa *p = parsePrograma();
-
-    printf("OK\n");
+    
+    testParseExp();
 
     return 0;
 }
