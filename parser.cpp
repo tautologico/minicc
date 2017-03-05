@@ -144,6 +144,14 @@ Exp* parseAtom() {
     return nullptr;
 }
 
+ExpBin* searchExpBin(ExpBin* expBin) {
+    ExpBin* exp1 = dynamic_cast<ExpBin*>(expBin->e1);
+    if (exp1==nullptr)
+        return expBin;
+    else
+        searchExpBin(exp1);
+}
+
 Exp* parseBinOp() {
     Exp* opEsq = parseAtom();
 
@@ -154,22 +162,23 @@ Exp* parseBinOp() {
 
         ExpBin* expBin = dynamic_cast<ExpBin*>(opDir);
         if (expBin != nullptr) {
+            ExpBin* exp1 = searchExpBin(expBin);
             // verifica se operador do resto tem precedencia maior
-            if (precMap[op1] >= precMap[expBin->op]) { // >= assume associatividade a esquerda
-                ExpBin *e1 = new ExpBin(op1, opEsq, expBin->e1);
-                expBin->e1 = e1;
-                return expBin;
+            if (precMap[op1] >= precMap[exp1->op]) { // >= assume associatividade a esquerda
+                ExpBin *e1 = new ExpBin(op1, opEsq, exp1->e1);
+                exp1->e1 = e1;
             } else {
-                ExpBin *res = new ExpBin(op1, opEsq, expBin);
-                return res;
+                ExpBin* cpExp = new ExpBin(exp1->op, exp1->e1, exp1->e2);
+                exp1->op = op1;
+                exp1->e1 = opEsq;
+                exp1->e2 = cpExp;
             }
+            return expBin;
         } else {   // operando direito nao era expressao binaria
             ExpBin *res = new ExpBin(op1, opEsq, opDir);
             return res;
         }
     }
-
-
     return opEsq;
 }
 
@@ -222,6 +231,7 @@ Programa* parsePrograma() {
 // --- Testes -----------------------------------
 bool assertExp(const std::string& sexp1, std::string sexp2){
     int len = sexp1.length();
+    int index = 0;
     // removendo espaço e quebra de linha
     sexp2.erase(std::remove(sexp2.begin(), sexp2.end(), ' '), sexp2.end());
     sexp2.erase(std::remove(sexp2.begin(), sexp2.end(), '\n'), sexp2.end());
@@ -232,11 +242,12 @@ bool assertExp(const std::string& sexp1, std::string sexp2){
 
     for(int i = 0 ; i < len ; ++i){
       if(sexp1[i]!=sexp2[i]){
-        fprintf(stderr, "\nbreakpoint => \t\t %s\n", sexp2.substr(0, i).c_str());
-        fprintf(stderr, "expressao econtrada =>\t %s\n", sexp2.c_str());
+        index = i;
         break;
       }
     }
+    fprintf(stderr, "\nbreakpoint => \t\t %s\n", sexp2.substr(0, index).c_str());
+    fprintf(stderr, "expressao econtrada =>\t %s\n", sexp2.c_str());
     return false;
 }
 
@@ -266,4 +277,6 @@ void testParseExp() {
     test_exp("exp7.mc", "=(Var(a)+(Lit(3)Cham(funcVar(x))))");
     test_exp("exp8.mc", "<(Cham(funcVar(x))+(Cham(funcVar(y))Lit(3)))");
     test_exp("exp9.mc", "+(+(*(Var(y)Var(x))Lit(3))Lit(10))");
+    test_exp("exp10.mc", "+(+(*(Var(x)Lit(2))Lit(2))*(Lit(5)Lit(4)))");
+    test_exp("exp11.mc", "+(+(+(+(Lit(9)Lit(8))Lit(7))Lit(6))*(Lit(5)Var(x)))");
 }
